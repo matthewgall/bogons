@@ -2,7 +2,7 @@ import {IPv4CidrRange, IPv6CidrRange} from "ip-num/IPRange.js";
 import {Validator} from "ip-num/Validator.js";
 
 class InvalidIP extends Error {}
-class Bogon {
+export default class Bogon {
     constructor(addr) {
         this.address = addr;
         this.type = this.address.includes(':') ? 'v6' : 'v4'
@@ -108,4 +108,4 @@ class Bogon {
     }
 }
 
-export default Bogon
+export { Bogon }
