@@ -45,7 +45,9 @@ let tests = {
     ],
     'invalid': [
         'lol',
-        'fail'
+        'fail',
+        '256.1.1.1',
+        'za01::'
     ]
 }
 
@@ -75,6 +77,20 @@ test('all non-bogon addresses are detected', t => {
         catch(e) {
             t.fail(`${i} was detected as Bogon`);
         }
+    }
+    t.pass();
+});
+
+test('all invalid addresses are rejected', t => {
+	for (let i of tests['invalid']) {
+        try {
+            let b = new Bogon(i)
+            if (b.isBogon()) {
+                throw Error
+            }
+            t.fail(`${i} was accepted as a valid address`)
+        }
+        catch(e) {}
     }
     t.pass();
 });
