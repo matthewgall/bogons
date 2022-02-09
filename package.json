@@ -1,16 +1,30 @@
 {
   "name": "@matthewgall/bogons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A daily updated library to detect IPv4 / IPv6 bogons",
   "main": "index.js",
   "scripts": {
     "test": "ava"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://matthewgall.codes/matthew/bogons.git"
+  },
+  "bugs": {
+    "url": "https://matthewgall.codes/matthew/bogons/issues"
+  },
+  "homepage": "https://matthewgall.codes/matthew/bogons",
   "keywords": [
     "bogon",
     "ipv6",
     "ipv6",
-    "gbp"
+    "bgp",
+    "networking",
+    "networks",
+    "ip-address",
+    "ipaddress",
+    "cidr",
+    "addressing"
   ],
   "author": "Matthew Gall <mgall@cloudflare.com>",
   "license": "ISC",

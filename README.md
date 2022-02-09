@@ -1,4 +1,4 @@
-# @matthewgall/bogon
+# @matthewgall/bogons
 
 Detect bogon addresses in IPv4 and IPv6 ranges, quickly and easily.
 
@@ -11,13 +11,13 @@ From [ipinfo.io](https://ipinfo.io/bogon):
 ## Installation
 
 ```sh
-npm install --save @matthewgall/bogon
+npm install --save @matthewgall/bogons
 ```
 
 ## Usage
 
 ```javascript
-import { Bogon } from "@matthewgall/bogon";
+import { Bogon } from "@matthewgall/bogons";
 
 let bogon = new Bogon('{IP ADDRESS}')
 return bogon.isBogon()
