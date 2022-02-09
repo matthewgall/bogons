@@ -3,7 +3,7 @@ import {Validator} from "ip-num/Validator.js";
 
 class InvalidIP extends Error {}
 class Bogon {
-	constructor(addr) {
+    constructor(addr) {
         this.address = addr;
         this.bogons = {
             'ipv4': [
@@ -63,7 +63,7 @@ class Bogon {
                 '2001:0:ffff:ffff::/64'
             ]
         };
-	}
+    }
 
     isBogon() {
         try {
