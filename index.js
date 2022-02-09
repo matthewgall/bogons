@@ -5,6 +5,7 @@ class InvalidIP extends Error {}
 class Bogon {
     constructor(addr) {
         this.address = addr;
+        this.type = this.address.includes(':') ? 'v6' : 'v4'
         this.bogons = {
             'ipv4': [
                 '0.0.0.0/8',
@@ -32,7 +33,9 @@ class Bogon {
                 'fc00::/7',
                 'fe80::/10',
                 'fec0::/10',
-                'ff00::/8',
+                'ff00::/8'
+            ],
+            'ipv6_additional': [
                 '2002::/24',
                 '2002:a00::/24',
                 '2002:7f00::/24',
@@ -66,24 +69,31 @@ class Bogon {
     }
 
     isBogon() {
-        try {
-            if (Validator.isValidIPv4String(this.address)) {
-                for (let r of this.bogons['ipv4']) {
-                    let parentRange = IPv4CidrRange.fromCidr(r);
-                    let childRange = IPv4CidrRange.fromCidr(`${this.address}/32`);
-                    if (childRange.inside(parentRange)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-        catch(e) {
+        if (this.type == 'v6') {
             try {
                 if (Validator.isValidIPv6String(this.address)) {
-                    for (let r of this.bogons['ipv6']) {
-                        let parentRange = IPv6CidrRange.fromCidr(r);
-                        let childRange = IPv6CidrRange.fromCidr(`${this.address}/128`);
+                    for (let cls of ['ipv6', 'ipv6_additional']) {
+                        for (let r of this.bogons[cls]) {
+                            let parentRange = IPv6CidrRange.fromCidr(r);
+                            let childRange = IPv6CidrRange.fromCidr(`${this.address}/128`);
+                            if (childRange.inside(parentRange)) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+            catch(e) {
+                throw new InvalidIP(`${this.address} is not a valid IPv4/IPv6 address`);
+            }
+        }
+        if (this.type == 'v4') {
+            try {
+                if (Validator.isValidIPv4String(this.address)) {
+                    for (let r of this.bogons['ipv4']) {
+                        let parentRange = IPv4CidrRange.fromCidr(r);
+                        let childRange = IPv4CidrRange.fromCidr(`${this.address}/32`);
                         if (childRange.inside(parentRange)) {
                             return true;
                         }
@@ -93,7 +103,7 @@ class Bogon {
             }
             catch(e) {
                 throw new InvalidIP(`${this.address} is not a valid IPv4/IPv6 address`);
-            }
+            }           
         }
     }
 }
