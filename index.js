@@ -1,7 +1,5 @@
-import { createRequire } from "module";
 import isIP from 'validator/lib/isIP.js';
-const require = createRequire(import.meta.url);
-const CIDRMatcher = require('cidr-matcher');
+import cidrMatcher from 'cidr-matcher';
 
 class InvalidIP extends Error {}
 export default class Bogon {
@@ -74,17 +72,17 @@ export default class Bogon {
         if (!isIP(this.address)) {
             throw new InvalidIP(`${this.address} is not a valid IPv4/IPv6 address`);
         }
-        
+
         if (this.type == 'v6') {
             for (let cls of ['ipv6', 'ipv6_additional']) {
                 for (let r of this.bogons[cls]) {
-                    let matcher = new CIDRMatcher(this.bogons[cls]);
+                    let matcher = new cidrMatcher(this.bogons[cls]);
                     return matcher.contains(this.address);
                 }
             }
         }
         if (this.type == 'v4') {
-            let matcher = new CIDRMatcher(this.bogons['ipv4']);
+            let matcher = new cidrMatcher(this.bogons['ipv4']);
             return matcher.contains(this.address);
         }
     }
