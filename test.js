@@ -51,8 +51,8 @@ let tests = {
     ]
 }
 
-test('all bogon addresses are detected', t => {
-	for (let i of tests['bogon']) {
+for (let i of tests['bogon']) {
+    test(`${i} was detected as a Bogon address`, t => {
         try {
             let b = new Bogon(i)
             if (!b.isBogon()) {
@@ -62,12 +62,12 @@ test('all bogon addresses are detected', t => {
         catch(e) {
             t.fail(`${i} was detected as Bogon`);
         }
-    }
-    t.pass();
-});
+        t.pass();
+    });
+}
 
-test('all non-bogon addresses are detected', t => {
-	for (let i of tests['not_bogon']) {
+for (let i of tests['not_bogon']) {
+    test(`${i} was identified as a non-Bogon address`, t => {
         try {
             let b = new Bogon(i)
             if (b.isBogon()) {
@@ -77,20 +77,20 @@ test('all non-bogon addresses are detected', t => {
         catch(e) {
             t.fail(`${i} was detected as Bogon`);
         }
-    }
-    t.pass();
-});
+        t.pass();
+    });
+}
 
-test('all invalid addresses are rejected', t => {
-	for (let i of tests['invalid']) {
+for (let i of tests['invalid']) {
+    test(`${i} was identified as an invalid IP address`, t => {
         try {
             let b = new Bogon(i)
             if (b.isBogon()) {
                 throw Error
             }
-            t.fail(`${i} was accepted as a valid address`)
+            t.fail(`${i} was accepted as a valid IP address`)
         }
         catch(e) {}
-    }
-    t.pass();
-});
+        t.pass();
+    });
+}
