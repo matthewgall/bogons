@@ -4,7 +4,8 @@
   "description": "A daily updated library to detect IPv4 / IPv6 bogons",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "update-data": "node update.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "ava": "^4.0.1"
+    "ava": "^4.0.1",
+    "axios": "^0.25.0"
   }
 }
