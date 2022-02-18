@@ -16,6 +16,16 @@ let tests = {
         '100::',
         '::'
     ],
+    'extended_bogon': [
+        // https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt
+        '43.240.52.1',
+        '103.11.196.13',
+        '103.137.34.19',
+        // https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt
+        '2001:222::101',
+        '2406:c9c2::65',
+        '4000::'
+    ],
     'not_bogon': [
         // 1.1.1.1
         '1.1.1.1',
@@ -51,8 +61,12 @@ let tests = {
     ]
 }
 
+/**
+ * OFFLINE TESTS
+ */
+
 for (let i of tests['bogon']) {
-    test(`${i} was detected as a Bogon address`, t => {
+    test(`${i} was detected as a Bogon address (offline)`, t => {
         try {
             let b = new Bogon(i)
             if (!b.isBogon()) {
@@ -67,7 +81,7 @@ for (let i of tests['bogon']) {
 }
 
 for (let i of tests['not_bogon']) {
-    test(`${i} was identified as a non-Bogon address`, t => {
+    test(`${i} was identified as a non-Bogon address (offline)`, t => {
         try {
             let b = new Bogon(i)
             if (b.isBogon()) {
@@ -82,10 +96,78 @@ for (let i of tests['not_bogon']) {
 }
 
 for (let i of tests['invalid']) {
-    test(`${i} was identified as an invalid IP address`, t => {
+    test(`${i} was identified as an invalid IP address (offline)`, t => {
         try {
             let b = new Bogon(i)
             if (b.isBogon()) {
+                throw Error
+            }
+            t.fail(`${i} was accepted as a valid IP address`)
+        }
+        catch(e) {}
+        t.pass();
+    });
+}
+
+/**
+ * ONLINE TESTS
+ */
+ for (let i of tests['bogon']) {
+    test(`${i} was detected as a Bogon address (online)`, async t => {
+        try {
+            let b = new Bogon(i);
+            b = await b.isExtendedBogon();
+            if (!b) {
+                throw Error
+            }
+        }
+        catch(e) {
+            console.log(e);
+            t.fail(`${i} was detected as Bogon`);
+        }
+        t.pass();
+    });
+}
+
+for (let i of tests['extended_bogon']) {
+    test(`${i} was detected as a Bogon address (online)`, async t => {
+        try {
+            let b = new Bogon(i);
+            b = await b.isExtendedBogon();
+            if (!b) {
+                throw Error
+            }
+        }
+        catch(e) {
+            console.log(e);
+            t.fail(`${i} was detected as Bogon`);
+        }
+        t.pass();
+    });
+}
+
+for (let i of tests['not_bogon']) {
+    test(`${i} was identified as a non-Bogon address (online)`, async t => {
+        try {
+            let b = new Bogon(i);
+            b = await b.isExtendedBogon();
+            if (b) {
+                throw Error
+            }
+        }
+        catch(e) {
+            t.fail(`${i} was detected as Bogon`);
+        }
+        t.pass();
+    });
+}
+
+for (let i of tests['invalid']) {
+    test(`${i} was identified as an invalid IP address (online)`, async t => {
+        try {
+            let b = new Bogon(i);
+            b = await b.isExtendedBogon();
+            if (b) {
                 throw Error
             }
             t.fail(`${i} was accepted as a valid IP address`)

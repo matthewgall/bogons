@@ -30,12 +30,13 @@
   "author": "Matthew Gall <mgall@cloudflare.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.25.0",
     "cidr-matcher": "^2.1.1",
+    "ipaddr.js": "^2.0.1",
     "validator": "^13.7.0"
   },
   "type": "module",
   "devDependencies": {
-    "ava": "^4.0.1",
-    "axios": "^0.25.0"
+    "ava": "^4.0.1"
   }
 }
