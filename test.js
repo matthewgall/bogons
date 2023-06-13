@@ -18,9 +18,8 @@ let tests = {
     ],
     'extended_bogon': [
         // https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt
-        '43.240.52.1',
-        '103.11.196.13',
-        '103.137.34.19',
+        '10.0.1.1',
+	'192.168.4.1',
         // https://www.team-cymru.org/Services/Bogons/fullbogons-ipv6.txt
         '2001:222::101',
         '2406:c9c2::65',
